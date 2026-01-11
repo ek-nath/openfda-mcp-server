@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "openfda": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/ek/Projects/openfda-mcp-server",
+        "run",
+        "--quiet",
+        "server.py"
+      ]
+    }
+  }
+}
