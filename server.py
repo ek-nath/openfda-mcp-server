@@ -1,10 +1,11 @@
 from fastmcp import FastMCP
-import httpx
+import os
 
 # Initialize the FastMCP server
 mcp = FastMCP("openfda-mcp-server")
 
 OPENFDA_BASE_URL = "https://api.fda.gov/drug"
+OPENFDA_API_KEY = os.environ.get("OPENFDA_API_KEY")
 
 @mcp.tool()
 async def search_drug_label(drug_name: str, limit: int = 1) -> str:
@@ -22,9 +23,13 @@ async def search_drug_label(drug_name: str, limit: int = 1) -> str:
         # Construct query: (openfda.brand_name:"drug_name" OR openfda.generic_name:"drug_name")
         query = f'(openfda.brand_name:"{sanitized_name}" openfda.generic_name:"{sanitized_name}")'
         
+        params = {"search": query, "limit": limit}
+        if OPENFDA_API_KEY:
+            params["api_key"] = OPENFDA_API_KEY
+        
         response = await client.get(
             f"{OPENFDA_BASE_URL}/label.json",
-            params={"search": query, "limit": limit}
+            params=params
         )
         
         if response.status_code != 200:
@@ -65,9 +70,13 @@ async def get_drug_adverse_events(drug_name: str, limit: int = 5) -> str:
         # Construct query
         query = f'patient.drug.medicinalproduct:"{sanitized_name}"'
         
+        params = {"search": query, "limit": limit}
+        if OPENFDA_API_KEY:
+            params["api_key"] = OPENFDA_API_KEY
+            
         response = await client.get(
             f"{OPENFDA_BASE_URL}/event.json",
-            params={"search": query, "limit": limit}
+            params=params
         )
         
         if response.status_code != 200:
