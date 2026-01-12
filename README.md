@@ -26,6 +26,26 @@ An MCP (Model Context Protocol) server for the [OpenFDA API](https://open.fda.go
     uv run server.py
     ```
 
+## API Key Configuration (Optional)
+
+The OpenFDA API is rate-limited. For higher throughput, you can obtain an API key from the [OpenFDA website](https://open.fda.gov/apis/authentication/).
+
+If you have an API key, you can provide it to the server using a `.env` file:
+
+1.  **Create `.env` file:**
+    Copy the provided template:
+    ```bash
+    cp .env.template .env
+    ```
+
+2.  **Set `OPENFDA_API_KEY`:**
+    Edit the newly created `.env` file and replace `your_openfda_api_key_here` with your actual API key:
+    ```
+    OPENFDA_API_KEY=your_actual_api_key
+    ```
+
+The server will automatically detect and use the `OPENFDA_API_KEY` from this file.
+
 ## Integration
 
 ### 1. Gemini CLI
